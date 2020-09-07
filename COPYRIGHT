@@ -1,0 +1,31 @@
+!*****************************************************************************!
+!                                                                             !
+!   sas_grid:                                                                 !
+!   A code to obtain the solvent accessible surface (SAS) around a given      !
+!   molecular structure                                                       !
+!                                                                             !
+!   Free software, licensed under GNU GPL v3                                  !
+!                                                                             !
+!   Copyright (c) 2017 - 2020 Felippe M. Colombari                            !
+!                                                                             !
+!   This file is part of sas_grid.                                            !
+!                                                                             !
+!   sas_grid is free software: you can redistribute it and/or modify it under !
+!   the terms of the GNU General Public License as published by the Free      !
+!   Software Foundation, either version 3 of the License, or (at your option) !
+!   any later version.                                                        !
+!                                                                             !
+!   sas_grid is distributed in the hope that it will be useful, but WITHOUT   !
+!   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     !
+!   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for  !
+!   more details.                                                             !
+!                                                                             !
+!   You should have received a copy of the GNU General Public License along   !
+!   with sas_grid. If not, see <https://www.gnu.org/licenses/>                !
+!                                                                             !
+!*****************************************************************************!
+!                                                                             !
+!               sas_grid, including its sources can be found at               ! 
+!                https://github.com/colombarifm/center_of_mass                !
+!                                                                             !
+!*****************************************************************************!
