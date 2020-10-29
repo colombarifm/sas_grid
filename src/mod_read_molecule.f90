@@ -175,8 +175,239 @@ contains
 
         radii_found(i) = .true.
 
-!        write(*,'(T5, "Atom ", i4.4,": ", a2, " found!", f7.3)') i, this % atoms(i) % label, &
-!        list % listed_atoms(j) % radii
+      else if ( mol % atoms(i) % label == "Ne" ) then
+
+        this % atoms(i) % vdw = radii_Ne + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Na" ) then
+
+        this % atoms(i) % vdw = radii_Na + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Mg" ) then
+
+        this % atoms(i) % vdw = radii_Mg + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Al" ) then
+
+        this % atoms(i) % vdw = radii_Al + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Si" ) then
+
+        this % atoms(i) % vdw = radii_Si + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "P" ) then
+
+        this % atoms(i) % vdw = radii_P + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "S" ) then
+
+        this % atoms(i) % vdw = radii_S + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Cl" ) then
+
+        this % atoms(i) % vdw = radii_Cl + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ar" ) then
+
+        this % atoms(i) % vdw = radii_Ar + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "K" ) then
+
+        this % atoms(i) % vdw = radii_K + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ca" ) then
+
+        this % atoms(i) % vdw = radii_Ca + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ga" ) then
+
+        this % atoms(i) % vdw = radii_Ga + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ge" ) then
+
+        this % atoms(i) % vdw = radii_Ge + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "As" ) then
+
+        this % atoms(i) % vdw = radii_As + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Se" ) then
+
+        this % atoms(i) % vdw = radii_Se + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Br" ) then
+
+        this % atoms(i) % vdw = radii_Br + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Kr" ) then
+
+        this % atoms(i) % vdw = radii_Kr + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Rb" ) then
+
+        this % atoms(i) % vdw = radii_Rb + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Sr" ) then
+
+        this % atoms(i) % vdw = radii_Sr + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "In" ) then
+
+        this % atoms(i) % vdw = radii_In + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Sn" ) then
+
+        this % atoms(i) % vdw = radii_Sn + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Sb" ) then
+
+        this % atoms(i) % vdw = radii_Sb + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Te" ) then
+
+        this % atoms(i) % vdw = radii_Te + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "I" ) then
+
+        this % atoms(i) % vdw = radii_I + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Xe" ) then
+
+        this % atoms(i) % vdw = radii_Xe + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Cs" ) then
+
+        this % atoms(i) % vdw = radii_Cs + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ba" ) then
+
+        this % atoms(i) % vdw = radii_Ba + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Tl" ) then
+
+        this % atoms(i) % vdw = radii_Tl + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Pb" ) then
+
+        this % atoms(i) % vdw = radii_Pb + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Bi" ) then
+
+        this % atoms(i) % vdw = radii_Bi + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Po" ) then
+
+        this % atoms(i) % vdw = radii_Po + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "At" ) then
+
+        this % atoms(i) % vdw = radii_At + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Rn" ) then
+
+        this % atoms(i) % vdw = radii_Rn + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Fr" ) then
+
+        this % atoms(i) % vdw = radii_Fr + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ra" ) then
+
+        this % atoms(i) % vdw = radii_Ra + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Pt" ) then
+
+        this % atoms(i) % vdw = radii_Pt + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Pd" ) then
+
+        this % atoms(i) % vdw = radii_Pd + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Ag" ) then
+
+        this % atoms(i) % vdw = radii_Ag + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Au" ) then
+
+        this % atoms(i) % vdw = radii_Au + radius
+
+        radii_found(i) = .true.
 
       endif
 
@@ -184,7 +415,7 @@ contains
 
         write(*,'(T5, "Atom ", i4.4,": ", a2, " not found!")') i, this % atoms(i) % label
         write(*,*)
-        write(*,'(T5, "Check your vdw-radii.txt file for the required entry.")')
+        write(*,'(T5, "Check the mod_constants.f90 file.")')
 
         stop
 

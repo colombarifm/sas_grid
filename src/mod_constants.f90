@@ -94,7 +94,12 @@ module mod_constants
   real( kind = DP ), parameter          :: radii_Fr =   3.4800_DP
   real( kind = DP ), parameter          :: radii_Ra =   2.8300_DP
 
+
+  real( kind = DP ), parameter          :: radii_Pt =   1.7500_DP
+  real( kind = DP ), parameter          :: radii_Pd =   1.6300_DP
+  real( kind = DP ), parameter          :: radii_Ag =   1.7200_DP
+  real( kind = DP ), parameter          :: radii_Au =   1.6600_DP
+
   ! todo
-  !https://doi.org/10.1063/1.4922953
 
 end module mod_constants
