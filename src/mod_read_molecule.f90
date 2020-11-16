@@ -409,6 +409,18 @@ contains
 
         radii_found(i) = .true.
 
+      else if ( mol % atoms(i) % label == "X" ) then
+
+        this % atoms(i) % vdw = radii_X 
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "XX" ) then
+
+        this % atoms(i) % vdw = radii_XX 
+
+        radii_found(i) = .true.
+
       endif
 
       if ( radii_found(i) .eqv. .false. ) then
