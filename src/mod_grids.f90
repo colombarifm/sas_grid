@@ -135,6 +135,16 @@ contains
 
     do i = 1, mol % num_atoms
 
+      if ( mol % atoms(i) % label == 'X' ) then
+
+        cycle
+
+      else if ( mol % atoms(i) % label == 'XX' ) then
+
+        cycle
+
+      else 
+
       do j = 1, grid_sphere % numpoints_sphere
 
         x1_sphere = mol % atoms(i) % xyz(1) + &
@@ -179,12 +189,23 @@ contains
         
       enddo
       
+    endif
     enddo
 
     grid_sas % numpoints_sas = 0
 
     do i = 1, mol % num_atoms
     
+      if ( mol % atoms(i) % label == 'X' ) then
+
+        cycle
+
+      else if ( mol % atoms(i) % label == 'XX' ) then
+
+        cycle
+
+      else
+
       do j = 1, grid_sphere % numpoints_sphere
           
         if ( check(i,j) .eqv. .true. ) then
@@ -194,7 +215,8 @@ contains
         endif
         
       enddo
-      
+     
+    endif
     enddo
 
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -212,6 +234,16 @@ contains
     write (40,'(a)')
       
     do i = 1, mol % num_atoms
+
+      if ( mol % atoms(i) % label == 'X' ) then
+
+        cycle
+
+      else if ( mol % atoms(i) % label == 'XX' ) then
+
+        cycle
+
+      else 
 
       do j = 1, grid_sphere % numpoints_sphere
       
@@ -234,7 +266,8 @@ contains
         endif
         
       enddo
-      
+     
+    endif
     enddo
       
     close(40)
