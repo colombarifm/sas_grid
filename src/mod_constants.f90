@@ -94,7 +94,9 @@ module mod_constants
   real( kind = DP ), parameter          :: radii_Fr =   3.4800_DP
   real( kind = DP ), parameter          :: radii_Ra =   2.8300_DP
 
-
+  real( kind = DP ), parameter          :: radii_W  =   2.1000_DP ! pubchem
+  real( kind = DP ), parameter          :: radii_Zn =   1.3900_DP
+  real( kind = DP ), parameter          :: radii_Cu =   1.4000_DP
   real( kind = DP ), parameter          :: radii_Pt =   1.7500_DP
   real( kind = DP ), parameter          :: radii_Pd =   1.6300_DP
   real( kind = DP ), parameter          :: radii_Ag =   1.7200_DP

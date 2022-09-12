@@ -177,7 +177,7 @@ contains
             
             r_sqr = dsqrt( dx*dx + dy*dy + dz*dz )
             
-            if ( r_sqr < mol % atoms(k) % vdw ) then
+            if ( r_sqr < 0.95*mol % atoms(k) % vdw ) then
     
               check(i,j) = .false.
               

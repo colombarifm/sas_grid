@@ -409,6 +409,24 @@ contains
 
         radii_found(i) = .true.
 
+      else if ( mol % atoms(i) % label == "Cu" ) then
+
+        this % atoms(i) % vdw = radii_Cu + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Zn" ) then
+
+        this % atoms(i) % vdw = radii_Zn + radius
+
+        radii_found(i) = .true.
+      
+      else if ( mol % atoms(i) % label == "W" ) then
+
+        this % atoms(i) % vdw = radii_W + radius
+
+        radii_found(i) = .true.
+
       else if ( mol % atoms(i) % label == "X" ) then
 
         this % atoms(i) % vdw = radii_X 

@@ -5,7 +5,7 @@ PROGRAM = sas_grid
 
 FC = gfortran
 
-FFLAGS = -g -Wall -O3 -fcheck=bounds -Wno-compare-reals -Wno-conversion -fbacktrace -fcheck=all -Wextra 
+FFLAGS = -g -Wall -O3 -fcheck=bounds -Wno-compare-reals -Wno-conversion -fbacktrace -fcheck=all -Wextra -static-libgfortran 
 
 # source directory
 SRCDIR = src

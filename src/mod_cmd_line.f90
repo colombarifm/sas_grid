@@ -126,7 +126,7 @@ contains
 
                 endif
 
-                if ( radius <= 1.0_DP ) then
+                if ( radius <= 0.0_DP ) then
 
                   call err%error('e',message="while reading command line.")
                   call err%error('e',check="solvent probe radius around atoms.") 
