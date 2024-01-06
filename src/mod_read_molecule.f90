@@ -455,11 +455,16 @@ contains
 
       if ( radii_found(i) .eqv. .false. ) then
 
-        write(*,'(T5, "Atom ", i4.4,": ", a2, " not found!")') i, this % atoms(i) % label
+        write(*,'(T5, "WARNING:")') 
+        write(*,'(T5, "Radius value for atom ", i4.4," (", a, ") not found!")') i, trim(this % atoms(i) % label)
         write(*,*)
         write(*,'(T5, "Check the mod_constants.f90 file.")')
+        write(*,*)
+        write(*,'(T5, "Default value of 2.0 was used!")')
 
-        stop
+        this % atoms(i) % vdw = 2.0_DP 
+
+        !stop
 
       endif
 
