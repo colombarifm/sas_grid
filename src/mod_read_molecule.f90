@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2020 Felippe M. Colombari
+!   Copyright (c) 2017 - 2024 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -424,6 +424,18 @@ contains
       else if ( mol % atoms(i) % label == "W" ) then
 
         this % atoms(i) % vdw = radii_W + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Mo" ) then
+
+        this % atoms(i) % vdw = radii_Mo + radius
+
+        radii_found(i) = .true.
+
+      else if ( mol % atoms(i) % label == "Cd" ) then
+
+        this % atoms(i) % vdw = radii_Cd + radius
 
         radii_found(i) = .true.
 

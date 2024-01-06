@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2020 Felippe M. Colombari
+!   Copyright (c) 2017 - 2024 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -101,6 +101,8 @@ module mod_constants
   real( kind = DP ), parameter          :: radii_Pd =   1.6300_DP
   real( kind = DP ), parameter          :: radii_Ag =   1.7200_DP
   real( kind = DP ), parameter          :: radii_Au =   1.6600_DP
+  real( kind = DP ), parameter          :: radii_Mo =   2.0900_DP
+  real( kind = DP ), parameter          :: radii_Cd =   2.0900_DP
 
   ! todo
 

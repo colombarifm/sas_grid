@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2020 Felippe M. Colombari
+!   Copyright (c) 2017 - 2024 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
