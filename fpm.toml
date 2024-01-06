@@ -1,0 +1,13 @@
+name = "sas_grid"
+version = "1.0.0"
+license = "GP-3.0-or-later"
+author = ["Felippe Colombari"]
+maintainer = ["@colombarifm"]
+copyright = "Copyright 2018, Felippe Colombari"
+
+[library]
+source-dir="src"
+
+[[executable]]
+name="sas_grid"
+main="sas_grid.f90"
