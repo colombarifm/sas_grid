@@ -6,13 +6,13 @@ It reads a .xyz file and writes out a new file containing the grid point coordin
 sas_grid is a free software written in Fortran 2003 language, being available at https://github.com/colombarifm/sas_grid under the GPLv3+ License. 
 It runs under Linux environment with gfortran/gcc 5.4+ compilers.
 
-## Build with fpm
-Download the github repository and build it with fpm
+## Build with make
+Download the github repository and build it with make
 
 ```bash
    git clone https://github.com/colombarifm/themis.git
    cd sas_grid
-   fpm build
+   make
 ```
 
 
