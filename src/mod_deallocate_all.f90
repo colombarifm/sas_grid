@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -57,8 +57,8 @@ contains
 
     !!!!! ARRAYS FROM MOD_GRIDS
 
-    deallocate( check )
-    deallocate( grid_sphere % points_sphere )
+    if ( allocated( check ) ) deallocate( check )
+    if ( allocated( grid_sphere % points_sphere) ) deallocate( grid_sphere % points_sphere )
 
     return
   end subroutine Deallocate_arrays

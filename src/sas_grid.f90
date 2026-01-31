@@ -30,15 +30,17 @@
 !---------------------------------------------------------------------------------------------------
 
 program sas_grid
-
+  use mod_error_handling    , only : error
   use mod_info              , only : Display_header, Display_date_time
   use mod_constants         , only : dashline
-  use mod_cmd_line          , only : Parse_arguments, filename, factor!, radius
+  use mod_cmd_line          , only : Parse_arguments, filename, factor, grid_type, box_min, box_max
   use mod_read_molecule     , only : mol 
-  use mod_grids             , only : grid_sphere, grid_sas 
+  use mod_grids             , only : grid_sphere, grid_sas, grid_box 
   use mod_deallocate_all    , only : Deallocate_arrays
 
   implicit none
+
+  type( error ) :: err
 
   call display_header()
 
@@ -48,12 +50,24 @@ program sas_grid
 
   call mol % Read_vdw_radii
 
-  call grid_sphere % Build_sphere_grid( factor )
+  select case( grid_type )
+  
+    case( 'sas' )
 
-  call grid_sas % Build_sas_grid
+      call grid_sphere % Build_sphere_grid( factor )
+
+      call grid_sas % Build_sas_grid
+
+    case( 'box' )
+
+      call grid_box % Build_box_grid( box_min, box_max )
+
+  end select
 
   call Deallocate_arrays
 
   write(*,'(/, T3, A)') dashline
+
+  call err % termination(0,'f')
 
 end program sas_grid

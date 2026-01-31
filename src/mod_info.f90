@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -30,8 +30,6 @@
 module mod_info
   use iso_fortran_env , only : stdout => output_unit
   use mod_constants   , only : dashline, DP
-  ! TODO: include in makefile 
-  !   include 'revision.inc'     
 
   implicit none
   private
@@ -48,7 +46,7 @@ contains
       
     write(stdout,'(T3, A)')       dashline
     write(stdout,'(T50, A, A)')   "SAS_GRID"
-    write(stdout,'(/,T8, A)')     " A code to obtain the solvent accessible surface (SAS) around a given molecular structure" 
+    write(stdout,'(/,T8, A)')     " A code to obtain grids based on the solvent accessible surface (SAS)" 
     write(stdout,'(/,T41, A, A)') "Author: Felippe M. Colombari"
     write(stdout,'(/,T39, A)')    "E-mail: colombarifm@hotmail.com"
     write(stdout,'(/,T43, A, A)') "Program version: ",trim(version)

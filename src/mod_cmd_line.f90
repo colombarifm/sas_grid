@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -27,23 +27,28 @@
 !> - independent module created                                                
 !> @date - Nov, 2019
 !> - update error condition by error_handling module 
+!> @date - Out, 2025
+!> - added "--type" option to select "box" or "sas" grid types
+!> - added "--min" and "--max" options to set coordinate ranges for the box
 !---------------------------------------------------------------------------------------------------
 
 module mod_cmd_line
   use iso_fortran_env    , only : stdout => output_unit
   use mod_constants      , only : DP, int_alphabet, float_alphabet, char_alphabet, dashline
-  use mod_error_handling
+  use mod_error_handling , only : error
 
   implicit none
 
   private
-  public Parse_Arguments, radius, factor, filename
+  public :: Parse_Arguments, solv_radius, factor, grid_type, box_min, box_max, filename
 
   integer                                          :: factor = 0
-  real( kind = DP )                                :: radius = 0.0_DP
+  real( kind = DP )                                :: solv_radius = 0.0_DP
+  real( kind = DP ), dimension(3)                  :: box_min = 0.0_DP
+  real( kind = DP ), dimension(3)                  :: box_max = 0.0_DP
+  character( len = 3 )                             :: grid_type = char(0)
   character( len = 64 )                            :: filename = char(0)
   character( len = 20 ), allocatable, dimension(:) :: arg         
-
   integer                                          :: ierr
   type(error)                                      :: err
 
@@ -57,13 +62,16 @@ contains
 
     implicit none
 
-    integer                :: i
-    integer                :: ios            = 0
-    integer                :: narg           = 0
-    integer                :: nochar         = 0
-    character( len = 256 ) :: cmd_line       = char(0)
+    integer                :: i, j
+    integer                :: ios      = 0
+    integer                :: narg     = 0
+    integer                :: nochar   = 0
+    logical                :: is_box   = .false.
+    logical                :: is_sas   = .false.
+    character( len = 256 ) :: cmd_line = char(0)
       
     narg = command_argument_count()
+
     call get_command(cmd_line)
 
     write(stdout,'(/,T5, A, A)') "COMMAND LINE READ: ", trim(cmd_line)
@@ -73,169 +81,345 @@ contains
     
       ! to avoid allocation errors if one forget the argument "rad"
 
-      allocate( arg(narg+1), stat=ierr )
-      if(ierr/=0) call err%error('e',message="abnormal memory allocation")
+      allocate( arg(narg+1), stat = ierr )
+      if( ierr /= 0 ) call err % error('e',message="abnormal memory allocation")
 
       arg = char(0)
 
-      do i = 1, narg
+      i = 1
+      do while ( i <= narg )
 
         call get_command_argument( i, arg(i) )
 
         if ( arg(i)(1:2) == '--' ) then
 
-          SELECT CASE( arg(i) )
+          select case( arg(i) )
 
-            CASE( '--help' )
+            case( '--help' )
 
               call Display_help
 
-            CASE( '--license' )
+            case( '--license' )
 
               call Display_license
 
-            CASE( '--version')  
+            case( '--version')  
 
               call display_version
 
-            CASE( '--radius' )
+            case( '--radius' )
 
-              call Get_command_argument( i+1, arg(i+1) )
+              if ( i <= narg ) then
 
-              nochar = verify( trim( arg(i+1) ), float_alphabet )
+                call Get_command_argument( i+1, arg(i+1) )
 
-              if ( nochar > 0 ) then
+                nochar = verify( trim( arg(i+1) ), float_alphabet )
 
-                call err%error('e',message="while reading command line.")
-                call err%error('e',check="solvent probe radius around atoms.") 
-                call err%error('e',tip="Its value (in Angstrom) should be > 0.1.")
-               
-                stop
-                
+                if ( nochar > 0 ) then
+
+                  call err % error('e', message = "while reading command line.")
+                  call err % error('e', check = "solvent probe radius around atoms.") 
+                  call err % error('e', tip = "Its value (in Angstrom) should be > 0.1.")
+
+                  stop
+
+                else
+
+                  read( arg(i+1), *, iostat = ios ) solv_radius
+                    
+                  if ( ios > 0 ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "solvent probe radius around atoms.") 
+                    call err % error('e', tip = "Its value (in Angstrom) should be > 0.1.")
+
+                    stop
+
+                  endif
+
+                  if ( solv_radius <= 0.0_DP ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "solvent probe radius around atoms.") 
+                    call err % error('e', tip = "Its value (in Angstrom) should be > 0.1.")
+                    stop
+
+                  endif
+
+                endif
+
               else
 
-                read(arg(i+1),*,iostat=ios) radius
-
-                if ( ios > 0 ) then
-
-                  call err%error('e',message="while reading command line.")
-                  call err%error('e',check="solvent probe radius around atoms.") 
-                  call err%error('e',tip="Its value (in Angstrom) should be > 0.1.")
-               
-                  stop
-
-                endif
-
-                if ( radius <= 0.0_DP ) then
-
-                  call err%error('e',message="while reading command line.")
-                  call err%error('e',check="solvent probe radius around atoms.") 
-                  call err%error('e',tip="Its value (in Angstrom) should be > 0.1.")
-               
-                  stop
-
-                endif
+                write(*,*) "some error"
 
               endif
+
+              i = i + 2
 
             CASE( '--input' )
 
-              call Get_command_argument( i+1, arg(i+1) )
+              if ( i <= narg ) then
 
-              nochar = verify( trim( arg(i+1) ), char_alphabet )
+                call Get_command_argument( i+1, arg(i+1) )
 
-              if ( nochar > 0 ) then
+                nochar = verify( trim( arg(i+1) ), char_alphabet )
 
-                call err%error('e',message="while reading command line.")
-                call err%error('e',check="molecule coordinate file.") 
-                call err%error('e',tip="Should be a valid .xyz file.")
-               
-                stop
-                
+                if ( nochar > 0 ) then
+
+                  call err % error('e', message = "while reading command line.")
+                  call err % error('e', check = "molecule coordinate file.") 
+                  call err % error('e', tip = "Should be a valid .xyz file.")
+
+                  stop
+
+                else
+
+                  read(arg(i+1), *, iostat = ios) filename
+
+                  if ( ios > 0 ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "molecule coordinate file.") 
+                    call err % error('e', tip = "Should be a valid .xyz file.")
+
+                    stop
+
+                  endif
+
+                endif
+
               else
 
-                read(arg(i+1),*,iostat=ios) filename
+                write(*,*) "some error 2"
 
-                if ( ios > 0 ) then
+              endif
+              
+              i = i + 2
 
-                  call err%error('e',message="while reading command line.")
-                  call err%error('e',check="molecule coordinate file.") 
-                  call err%error('e',tip="Should be a valid .xyz file.")
-               
+            case( '--type' )
+
+              if ( i <= narg ) then
+
+                call Get_command_argument( i+1, arg(i+1) )
+
+                nochar = verify( trim( arg(i+1) ), char_alphabet )
+
+                if ( nochar > 0 ) then
+
+                  call err % error('e', message = "while reading command line.")
+                  call err % error('e', check = "resullting grid type.") 
+                  call err % error('e', tip = "Its value (a string) should be either 'box' or 'sas'.")
+
                   stop
+
+                else
+
+                  read(arg(i+1),*,iostat=ios) grid_type
+
+                  if ( ios > 0 ) then                
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "resulting grid type.") 
+                    call err % error('e', tip = "Its value (a string) should be either 'box' or 'sas'.")
+
+                    stop
+
+                  endif
+
+                  if ( grid_type == 'box' ) then
+
+                    is_box = .true.
+
+                  else if ( grid_type == 'sas' ) then
+
+                    is_sas = .true.
+
+                  else
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "resulting grid type.") 
+                    call err % error('e', tip = "Its value (a string) should be either 'box' or 'sas'.")
+
+                    stop
+
+                  endif
 
                 endif
 
               endif
+                    
+              i = i + 2
 
-            CASE( '--factor' )
+            case( '--factor' )
 
-              call Get_command_argument( i+1, arg(i+1) )
+              if ( i <= narg ) then
 
-              nochar = verify( trim( arg(i+1) ), int_alphabet )
+                call Get_command_argument( i+1, arg(i+1) )
 
-              if ( nochar > 0 ) then
+                nochar = verify( trim( arg(i+1) ), int_alphabet )
 
-                call err%error('e',message="while reading command line.")
-                call err%error('e',check="sphere tessellation factor.") 
-                call err%error('e',tip="Its value (an integer) should be > 1.")
-               
-                stop
-                
+                if ( nochar > 0 ) then
+
+                  call err % error('e', message = "while reading command line.")
+                  call err % error('e', check = "sphere tessellation factor.") 
+                  call err % error('e', tip = "Its value (an integer) should be > 1.")
+
+                  stop       
+
+                else
+
+                  read(arg(i+1),*,iostat=ios) factor
+
+                  if ( ios > 0 ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "sphere tessellation factor.") 
+                    call err % error('e', tip = "Its value (an integer) should be > 1.")
+
+                    stop
+
+                  endif
+
+                  if ( factor <= 1.0_DP ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "sphere tessellation factor.") 
+                    call err % error('e', tip = "Its value (an integer) should be > 1.")
+
+                    stop
+
+                  endif
+
+                endif
+
               else
 
-                read(arg(i+1),*,iostat=ios) factor
-
-                if ( ios > 0 ) then
-
-                  call err%error('e',message="while reading command line.")
-                  call err%error('e',check="sphere tessellation factor.") 
-                  call err%error('e',tip="Its value (an integer) should be > 1.")
-               
-                  stop
-
-                endif
-
-                if ( factor <= 1.0_DP ) then
-
-                  call err%error('e',message="while reading command line.")
-                  call err%error('e',check="sphere tessellation factor.") 
-                  call err%error('e',tip="Its value (an integer) should be > 1.")
-               
-                  stop
-
-                endif
+                write(*,*) "some error 4"
 
               endif
 
-            CASE DEFAULT
+            i = i + 2
 
-              call err%error('e',message="while reading command line.")
-              call err%error('e',check="invalid command line flag '"//trim(adjustl(arg(i)))//"'.")
+            case( '--min' )
+
+              if ( i + 3 <= narg ) then
+
+                do j = 1, 3
+
+                  call Get_command_argument( i+j, arg(i+j) )
+
+                  nochar = verify( trim( arg(i+j) ), float_alphabet )
+
+                  if ( nochar > 0 ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "min coordinates of box-type grid.") 
+                    call err % error('e', tip = "XYZ values (in Angstrom) are expected.")
+
+                    stop               
+
+                  else
+
+                    read(arg(i+j), *, iostat = ios) box_min(j)
+
+                    if ( ios > 0 ) then
+
+                      call err % error('e', message = "while reading command line.")
+                      call err % error('e', check = "min coordinates of box-type grid.") 
+                      call err % error('e', tip = "XYZ values (in Angstrom) are expected.")
+
+                      stop
+
+                    endif
+
+                  endif
+
+                enddo
+
+              else
+
+                write(*,*) "some error min"
+
+              endif
+            
+              i = i + 4
+ 
+            case( '--max' )
+
+              if ( i + 3 <= narg ) then
+
+                do j = 1, 3
+
+                  call Get_command_argument( i+j, arg(i+j) )
+
+                  nochar = verify( trim( arg(i+j) ), float_alphabet )
+
+                  if ( nochar > 0 ) then
+
+                    call err % error('e', message = "while reading command line.")
+                    call err % error('e', check = "center of box-type grid.") 
+                    call err % error('e', tip = "XYZ values (in Angstrom) are expected.")
+
+                    stop     
+
+                  else
+
+                    read(arg(i+j), *, iostat = ios) box_max(j)
+
+                    if ( ios > 0 ) then
+
+                      call err % error('e', message = "while reading command line.")
+                      call err % error('e', check = "min coordinates of box-type grid.") 
+                      call err % error('e', tip = "XYZ values (in Angstrom) are expected.")
+
+                      stop
+
+                    endif
+
+                  endif
+
+                enddo
+
+              else
+
+                write(*,*) "some error max"
+
+              endif
+
+              i = i + 4
+
+            case default
+
+              call err % error('e', message = "while reading command line.")
+              call err % error('e', check = "invalid command line flag '"//trim(adjustl(arg(i)))//"'.")
                
               stop
 
-          end SELECT
+          end select
 
         else 
 
-          if ( arg(1)(1:2) /= '--' ) then
-
-            call err%error('e',message="while reading command line.")
-            call err%error('e',check="'"//trim(adjustl(arg(i+1)))//"' argument of '"//trim(adjustl(arg(i)))//"' flag.")
+            call err % error('e', message = "while reading command line.")
+            call err % error('e', check = "'"//trim(adjustl(arg(i)))//"' flag.")
 
             stop
 
-          endif
+          !if ( arg(1)(1:2) /= '--' ) then
 
-          if ( ( i > 1 ) .and. ( arg(i-1)(1:2) ) /= '--' ) then
+          !  call err % error('e',message="while reading command line.")
+          !  call err % error('e',check="'"//trim(adjustl(arg(i+1)))//"' argument of '"//trim(adjustl(arg(i)))//"' flag.")
 
-            call err%error('e',message="while reading command line.")
-            call err%error('e',check="'"//trim(adjustl(arg(i+1)))//"' argument of '"//trim(adjustl(arg(i)))//"' flag.")
+          !  stop
 
-            stop
+          !endif
 
-          endif
+          !if ( ( i > 1 ) .and. ( arg(i-1)(1:2) ) /= '--' ) then
+
+          !  call err % error('e',message="while reading command line.")
+          !  call err % error('e',check="'"//trim(adjustl(arg(i+1)))//"' argument of '"//trim(adjustl(arg(i)))//"' flag.")
+          !  stop
+
+          !endif
 
         endif
 
@@ -245,34 +429,84 @@ contains
 
     else if ( narg == 0 ) then 
 
-      call err%error('e',message="while reading command line.")
-      call err%error('e',tip="Command line arguments are missing.")
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', tip = "Command line arguments are missing.")
 
       stop
 
     endif
 
-    if ( radius == 0.0_DP ) then
+    if ( ( is_box .eqv. .false. ) .and. ( is_sas .eqv. .false. ) ) then
 
-      call err%error('e',message="while reading command line.")
-      call err%error('e',check="radius option.")
-      call err%error('e',tip="values should be > 0.1.")
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "resulting grid type.") 
+      call err % error('e', tip = "either '--type sas' or '--type box' must be set. Aborting....")
+
+      stop
+      
+    endif
+
+    if ( ( is_box .eqv. .true. ) .and. ( is_sas .eqv. .true. ) ) then
+
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "resulting grid type.") 
+      call err % error('e', tip = "either '--type sas' or '--type box' must be set. Aborting....")
+
+      stop
+      
+    endif
+
+    if ( ( is_box .eqv. .true. ) .and. ( factor > 0 ) ) then
+
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "resulting grid type.") 
+      call err % error('e', tip = "--factor sould be used with '--type sas' only. Aborting....")
+
+      stop
+  
+    endif
+
+    if ( ( is_sas .eqv. .true. ) .and. ( any(box_min /= 0.0_DP) ) ) then
+
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "resulting grid type.") 
+      call err % error('e', tip = "--min sould be used with '--type box' only. Aborting....")
 
       stop
 
-    else if ( factor == 0 ) then
+    endif
+    
+    if ( ( is_sas .eqv. .true. ) .and. ( any(box_max /= 0.0_DP) ) ) then
 
-      call err%error('e',message="while reading command line.")
-      call err%error('e',check="factor option.")
-      call err%error('e',tip="values should be > 1.")
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "resulting grid type.") 
+      call err % error('e', tip = "--max sould be used with '--type box' only. Aborting....")
+
+      stop
+
+    endif
+    
+    if ( ( is_sas .eqv. .true. ) .and. ( solv_radius == 0.0_DP ) ) then
+
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "radius option.")
+      call err % error('e', tip = "values should be > 0.1.")
+
+      stop
+
+    else if ( ( is_sas .eqv. .true. ) .and. ( factor == 0 ) ) then
+
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "factor option.")
+      call err % error('e', tip = "values should be > 1.")
 
       stop
 
     else if ( filename == char(0) ) then
 
-      call err%error('e',message="while reading command line.")
-      call err%error('e',check="molecule coordinate file.") 
-      call err%error('e',tip="Should be a valid .xyz file.")
+      call err % error('e', message = "while reading command line.")
+      call err % error('e', check = "molecule coordinate file.") 
+      call err % error('e', tip = "Should be a valid .xyz file.")
 
       stop
 
@@ -330,7 +564,7 @@ contains
 
     if ( allocated(arg) ) deallocate(arg)
 
-    call err%termination(0,'f')
+    call err % termination(0,'f')
 
   end subroutine Display_license
 
@@ -342,15 +576,13 @@ contains
 
     implicit none
     
-    character(len=:), allocatable :: version
+    character( len = : ), allocatable :: version
     
-    ! TODO link to version control 
-
-    version = '1.0.0-beta'
+    version = '1.1.0'
 
     write(stdout,'("sas_grid ",a)') version
      
-    call err%termination(0,'f')
+    call err % termination(0,'f')
 
   end subroutine Display_version
 

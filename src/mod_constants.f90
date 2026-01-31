@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -33,23 +33,25 @@ module mod_constants
 
   implicit none
 
-  integer, public, parameter           :: DP = selected_real_kind(15, 307) !  double precision constant for portability
+  public
+
+  integer, parameter           :: DP = selected_real_kind(15, 307) !  double precision constant for portability
   
-  real( kind = DP ), public, parameter :: PI      = 3.14159265358979_DP    !         PI constant with 14 decimal places
-  real( kind = DP ), public, parameter :: DEG2RAD = 180.0_DP / PI          !                         degrees to radians
-  real( kind = DP ), public, parameter :: FPZERO  = tiny(1.0_DP)           !              define machine-precision ZERO
-  real( kind = DP ), public, parameter :: FPINF   = huge(1.0_DP)           !          define machine-precision INFINITY
+  real( kind = DP ), parameter :: PI      = 3.14159265358979_DP    !         PI constant with 14 decimal places
+  real( kind = DP ), parameter :: DEG2RAD = 180.0_DP / PI          !                         degrees to radians
+  real( kind = DP ), parameter :: FPZERO  = tiny(1.0_DP)           !              define machine-precision ZERO
+  real( kind = DP ), parameter :: FPINF   = huge(1.0_DP)           !          define machine-precision INFINITY
   
-  character( len = 11 ), public, parameter   :: INT_ALPHABET   = '1234567890'    !       allowed character for integers
-  character( len = 12 ), public, parameter   :: FLOAT_ALPHABET = '.-1234567890'  !         allowed character for floats
-  character( len = 66 ), public, parameter   :: CHAR_ALPHABET  = &
+  character( len = 11 ), parameter   :: INT_ALPHABET   = '1234567890'    !       allowed character for integers
+  character( len = 12 ), parameter   :: FLOAT_ALPHABET = '.-1234567890'  !         allowed character for floats
+  character( len = 66 ), parameter   :: CHAR_ALPHABET  = &
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-1234567890 '   !              allowed character for strings
-  character( len = 100 ), public, parameter  :: DASHLINE = repeat('-',100)      !                       just a dashline
+  character( len = 100 ), parameter  :: DASHLINE = repeat('-',100)      !                       just a dashline
 
   !https://pubs.acs.org/doi/10.1021/jp8111556
   real( kind = DP ), parameter          :: radii_X  =   0.0000_DP
   real( kind = DP ), parameter          :: radii_XX =   0.0000_DP
-  real( kind = DP ), parameter          :: radii_H  =   1.1000_DP
+  real( kind = DP ), parameter          :: radii_H  =   1.2000_DP ! Bondi, Gromacs
   real( kind = DP ), parameter          :: radii_He =   1.4000_DP
   real( kind = DP ), parameter          :: radii_Li =   1.8100_DP
   real( kind = DP ), parameter          :: radii_Be =   1.5300_DP
@@ -103,6 +105,7 @@ module mod_constants
   real( kind = DP ), parameter          :: radii_Au =   1.6600_DP
   real( kind = DP ), parameter          :: radii_Mo =   2.0900_DP
   real( kind = DP ), parameter          :: radii_Cd =   2.0900_DP
+  real( kind = DP ), parameter          :: radii_Fe =   1.9400_DP
 
   ! todo
 
