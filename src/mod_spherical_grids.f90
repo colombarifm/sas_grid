@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -35,6 +35,10 @@ module mod_spherical_grids
   use mod_constants, only: DP, PI
 
   implicit none
+
+  private
+
+  public :: Sphere_icos1_points
 
 contains
 

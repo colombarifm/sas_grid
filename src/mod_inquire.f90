@@ -4,7 +4,7 @@
 !
 !   Free software, licensed under GNU GPL v3
 !
-!   Copyright (c) 2017 - 2024 Felippe M. Colombari
+!   Copyright (c) 2017 - 2026 Felippe M. Colombari
 !
 !---------------------------------------------------------------------------------------------------
 !
@@ -30,9 +30,13 @@
 !---------------------------------------------------------------------------------------------------
 
 module mod_inquire
-  use mod_error_handling
+  use mod_error_handling , only : error
 
   implicit none
+
+  private
+
+  public :: Inquire_file
 
 contains
 
