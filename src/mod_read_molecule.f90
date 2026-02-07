@@ -32,35 +32,37 @@
 !---------------------------------------------------------------------------------------------------
 
 module mod_read_molecule
-  use mod_constants
+  use mod_constants 
 
   implicit none
-  
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  private
+
+  public :: mol, radii_found
 
   type atom 
-    real( kind = dp )                       :: xyz(3), rvdw, rvdw_solv
-    character( len = 2 )                    :: label
+    real( kind = dp )         :: xyz(3), rvdw, rvdw_solv
+    character( len = 2 )      :: label
   end type atom
 
   type molecule
-    type( atom ), allocatable,dimension(:) :: atoms
-    integer                                :: num_atoms
+    type( atom ), allocatable :: atoms(:)
+    integer                   :: num_atoms
   contains
-    procedure, pass                        :: Read_molecule
-    procedure, pass                        :: Read_vdw_radii
+    procedure, pass           :: Read_molecule
+    procedure, pass           :: Read_vdw_radii
   end type molecule
 
-  type( molecule )                         :: mol
+  type( molecule )            :: mol
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   type atom_entry
-    character( len = 2 )                   :: symbol 
-    real( kind = DP )                      :: radii 
+    character( len = 2 )      :: symbol 
+    real( kind = DP )         :: radii 
   end type atom_entry
 
-  logical, allocatable, dimension(:)       :: radii_found
+  logical, allocatable        :: radii_found(:)
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -88,22 +90,21 @@ contains
 
     call Inquire_file( file_unit, molecule_filename, file_format, file_access )
 
-    read(file_unit,*,iostat=ios) this % num_atoms
-    read(file_unit,*)
+    read(file_unit, *, iostat = ios) this % num_atoms
+    read(file_unit, *)
 
     if ( allocated ( this % atoms ) ) deallocate ( this % atoms )
-    allocate( this % atoms( this % num_atoms ), stat=ierr )
-    if(ierr/=0) call err % error('e',message="abnormal memory allocation")
+    allocate( this % atoms( this % num_atoms ), stat = ierr )
+    if ( ierr /= 0 ) call err % error('e', message = "abnormal memory allocation")
 
     do i = 1, this % num_atoms
 
-      read(file_unit,*,iostat=ios) this % atoms(i) % label, this % atoms(i) % xyz(:)
+      read(file_unit, *, iostat = ios) this % atoms(i) % label, this % atoms(i) % xyz(:)
 
     enddo
 
     close(file_unit)
 
-    return
   end subroutine Read_molecule
 
   subroutine Read_vdw_radii( this )
@@ -525,8 +526,6 @@ contains
 
         this % atoms(i) % rvdw      = 2.0_DP 
         this % atoms(i) % rvdw_solv = 2.0_DP + solv_radius
-
-        !stop
 
       endif
 

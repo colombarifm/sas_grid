@@ -42,15 +42,15 @@ module mod_cmd_line
   private
   public :: Parse_Arguments, solv_radius, factor, grid_type, box_min, box_max, filename
 
-  integer                                          :: factor = 0
-  real( kind = DP )                                :: solv_radius = 0.0_DP
-  real( kind = DP ), dimension(3)                  :: box_min = 0.0_DP
-  real( kind = DP ), dimension(3)                  :: box_max = 0.0_DP
-  character( len = 3 )                             :: grid_type = char(0)
-  character( len = 64 )                            :: filename = char(0)
-  character( len = 20 ), allocatable, dimension(:) :: arg         
-  integer                                          :: ierr
-  type(error)                                      :: err
+  integer                            :: factor = 0
+  real( kind = DP )                  :: solv_radius = 0.0_DP
+  real( kind = DP )                  :: box_min(3) = 0.0_DP
+  real( kind = DP )                  :: box_max(3) = 0.0_DP
+  character( len = 3 )               :: grid_type = char(0)
+  character( len = 64 )              :: filename = char(0)
+  character( len = 20 ), allocatable :: arg(:)         
+  integer                            :: ierr
+  type( error )                      :: err
 
 contains
   

@@ -40,15 +40,15 @@ module mod_inquire
 
 contains
 
-  subroutine Inquire_file(file_unit,file_name,file_format,file_access)
+  subroutine Inquire_file(file_unit, file_name, file_format, file_access)
       
     implicit none
 
     logical                          :: lexists
     integer                          :: ios
-    integer, intent(IN)              :: file_unit             
-    character( len = * ), intent(IN) :: file_format, file_access, file_name
-    type(error)                      :: err
+    integer, intent(in)              :: file_unit             
+    character( len = * ), intent(in) :: file_format, file_access, file_name
+    type( error )                    :: err
 
     ios = 0
 
@@ -65,8 +65,8 @@ contains
 
       else
 
-        call err%error('e',message="while reading file: "//trim(file_name))
-        call err%error('e',check="if file exists in this directory.")
+        call err % error('e', message = "while reading file: "//trim(file_name))
+        call err % error('e', check = "if file exists in this directory.")
 
         stop
 
@@ -74,13 +74,12 @@ contains
 
     else
 
-      call err%error('e',message="while reading file: "//trim(file_name))
+      call err % error('e', message = "while reading file: "//trim(file_name))
       
       stop
 
     endif
 
-    return
   end subroutine Inquire_file
 
 end module mod_inquire

@@ -32,6 +32,7 @@ module mod_info
   use mod_constants   , only : dashline, DP
 
   implicit none
+  
   private
 
   public :: Display_header, display_date_time
@@ -66,13 +67,12 @@ contains
 
     implicit none
 
-    character( len = * ), intent(IN) :: string
-    integer,dimension(8)             :: values
+    character( len = * ), intent(in) :: string
+    integer                          :: values(8)
     
     call Date_and_time( VALUES = values )
     write(stdout,'(/, T5, A, i2.2, "/", i2.2, "/", i4, " - ", i2.2, ":", i2.2, ":", i2.2)') string,   &
                               &values(3), values(2), values(1), values(5), values(6), values(7)
-
 
     end subroutine Display_date_time
          

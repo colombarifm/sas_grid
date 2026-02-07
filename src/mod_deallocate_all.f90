@@ -60,7 +60,6 @@ contains
     if ( allocated( check ) ) deallocate( check )
     if ( allocated( grid_sphere % points_sphere) ) deallocate( grid_sphere % points_sphere )
 
-    return
   end subroutine Deallocate_arrays
 
 end module mod_deallocate_all

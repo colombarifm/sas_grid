@@ -39,44 +39,46 @@ module mod_grids
 
   implicit none
 
-  !private
+  private
+
+  public :: Build_sphere_grid, Build_sas_grid, Build_box_grid, grid_sphere, grid_sas, grid_box, check 
 
   type point
-    real( kind = DP )                              :: grid_xyz(3)
-    character( len = 3 )                           :: grid_symbol
+    real( kind = DP )          :: grid_xyz(3)
+    character( len = 3 )       :: grid_symbol
   end type point
 
   type sphere_grid
-    type( point ), allocatable, dimension(:)       :: points_sphere
-    integer                                        :: numpoints_sphere
+    type( point ), allocatable :: points_sphere(:)
+    integer                    :: numpoints_sphere
   contains
-    procedure, pass                                :: Build_sphere_grid
+    procedure, pass            :: Build_sphere_grid
   end type sphere_grid
 
-  type( sphere_grid )                              :: grid_sphere
+  type( sphere_grid )          :: grid_sphere
 
   type sas_grid
-    integer                                        :: numpoints_sas
+    integer                    :: numpoints_sas
   contains
-    procedure, pass                                :: Build_sas_grid
+    procedure, pass            :: Build_sas_grid
   end type sas_grid
 
-  type( sas_grid )                                 :: grid_sas
+  type( sas_grid )             :: grid_sas
 
   type box_grid
-    type( point ), allocatable, dimension(:)       :: points_box
-    integer                                        :: numpoints_box
-    integer                                        :: numpoints_cavity
+    type( point ), allocatable :: points_box(:)
+    integer                    :: numpoints_box
+    integer                    :: numpoints_cavity
   contains
-    procedure, pass                                :: Build_box_grid
+    procedure, pass            :: Build_box_grid
   end type box_grid
 
-  type( box_grid )                                 :: grid_box
+  type( box_grid )             :: grid_box
   
-  real(kind=dp)                                    :: x1_sphere, y1_sphere, z1_sphere
-  real(kind=dp)                                    :: x2_sphere, y2_sphere, z2_sphere
-  real(kind=dp)                                    :: dx, dy, dz, r_sqr
-  logical, allocatable, dimension(:,:)             :: check
+  real(kind=dp)                :: x1_sphere, y1_sphere, z1_sphere
+  real(kind=dp)                :: x2_sphere, y2_sphere, z2_sphere
+  real(kind=dp)                :: dx, dy, dz, r_sqr
+  logical, allocatable         :: check(:,:)
 
 contains
 
@@ -90,12 +92,12 @@ contains
 
     implicit none
 
-    class( sphere_grid ), intent(inout)            :: this
-    integer, intent(IN)                            :: tessellation_factor
-    integer                                        :: node_num
-    real( kind = DP ), allocatable, dimension(:,:) :: node_xyz
-    integer                                        :: ierr
-    type(error)                                    :: err
+    class( sphere_grid ), intent(inout) :: this
+    integer, intent(in)                 :: tessellation_factor
+    integer                             :: node_num
+    real( kind = DP ), allocatable      :: node_xyz(:,:)
+    integer                             :: ierr
+    type( error )                       :: err
 
     node_num = 12 + 10 * 3 * ( tessellation_factor - 1 ) + 10 * ( tessellation_factor - 2 ) * ( tessellation_factor - 1 )
     !edge_num = 30 * factor * factor
@@ -117,13 +119,12 @@ contains
 
     if ( allocated(node_xyz) ) deallocate(node_xyz)
       
-    return
   end subroutine Build_sphere_grid
 
   subroutine Build_sas_grid( this )
-    use mod_read_molecule
-    use mod_error_handling
-    use mod_constants, only : PI
+    use mod_read_molecule  , only : mol
+    use mod_error_handling , only : error
+    use mod_constants      , only : PI
 
     implicit none
 
@@ -266,17 +267,17 @@ contains
   end subroutine Build_sas_grid 
 
   subroutine Build_box_grid( this, box_min, box_max )
-    use mod_read_molecule
-    use mod_error_handling
+    use mod_read_molecule  , only : mol
+    use mod_error_handling , only : error
 
     implicit none
 
-    class( box_grid ), intent(inout)               :: this
-    real( kind = DP ), intent(in)                  :: box_min(3), box_max(3)
-    real( kind = DP ), allocatable, dimension(:,:) :: coords_box, coords_cavity
-    real( kind = DP )                              :: rij, delta
-    integer                                        :: npoints_x, npoints_y, npoints_z
-    integer                                        :: i, ix, iy, iz
+    class( box_grid ), intent(inout) :: this
+    real( kind = DP ), intent(in)    :: box_min(3), box_max(3)
+    real( kind = DP ), allocatable   :: coords_box(:,:), coords_cavity(:,:)
+    real( kind = DP )                :: rij, delta
+    integer                          :: npoints_x, npoints_y, npoints_z
+    integer                          :: i, ix, iy, iz
 
     delta = 0.5_DP
 
