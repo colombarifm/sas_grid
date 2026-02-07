@@ -17,9 +17,9 @@ Download the github repository and build it with make
 ```
 
 
-## usage
+## Usage instructions
 
-For SAS grid generation, one should use the following command:
+### For SAS grid generation, one should use the following command:
 
 `sas_grid --input [FILE] --radius [RADIUS] --factor [FACTOR] --type sas`
 
@@ -29,7 +29,7 @@ For SAS grid generation, one should use the following command:
 
 `[FACTOR]` is an integer factor for the tessellation sphere. For each atom-centered sphere, N_points = 2 + factor^2 * 10.
 
-For a cavity grid generation, one should use the following command:
+### For a cavity grid generation, one should use the following command:
 
 `sas_grid --input [FILE] --radius [RADIUS] --type box --min [Xmin] [Ymin] [Zmin] --max [Xmax] [Ymax] [Zmax]`
 
@@ -39,4 +39,4 @@ For a cavity grid generation, one should use the following command:
 
 ## TODO
 
-vdW radii for transition elements are still missing. The code will be updated soon.
+vdW radii for some transition elements are still missing. A default value of 2.0 A is used. Please check results carefully.
