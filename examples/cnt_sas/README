@@ -1,0 +1,1 @@
+sas_grid --input conf1.xyz --type sas --factor 3 --radius 1.4

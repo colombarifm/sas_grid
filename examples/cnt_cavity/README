@@ -1,0 +1,1 @@
+sas_grid --input conf1.xyz --type box --min -4 -4 -4 --max 4 4 4 --radius 1.4
